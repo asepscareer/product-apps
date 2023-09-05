@@ -13,9 +13,9 @@ class GetListProducts {
         final jsonData = json.decode(response.body);
         final result = ProductData.fromJson(jsonData);
 
-        for (Product product in result.products) {
-          print("Title: ${product.title}, Price: \$${product.price}");
-        }
+        // for (Product product in result.products) {
+        //   print("Title: ${product.title}, Price: \$${product.price}");
+        // }
 
         return result;
       } else {

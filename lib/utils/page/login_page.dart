@@ -1,5 +1,5 @@
-import 'package:product_apps/utils/button/login.dart';
-import 'package:product_apps/utils/form/email.dart';
+import 'package:product_apps/utils/button/login_button.dart';
+import 'package:product_apps/utils/form/username.dart';
 import 'package:product_apps/utils/form/password.dart';
 import 'package:flutter/material.dart';
 
@@ -11,6 +11,28 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+
+  @override
+  void dispose() {
+    _usernameController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
+
+  void handleUsernameChanged(String value) {
+    setState(() {
+      _usernameController.text = value;
+    });
+  }
+
+  void handlePasswordChanged(String value) {
+    setState(() {
+      _passwordController.text = value;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -85,12 +107,12 @@ class _LoginPageState extends State<LoginPage> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const EmailForm(),
+                        UsernameForm(onUsernameChanged: handleUsernameChanged),
                         Container(
                           height: 20.0,
                           decoration: const BoxDecoration(color: Colors.white),
                         ),
-                        const PasswordForm(),
+                        PasswordForm(onPasswordChanged: handlePasswordChanged),
                         Container(
                           height: 10.0,
                           decoration: const BoxDecoration(color: Colors.white),
@@ -112,7 +134,10 @@ class _LoginPageState extends State<LoginPage> {
                           height: 50.0,
                           decoration: const BoxDecoration(color: Colors.white),
                         ),
-                        const LoginButton(),
+                        LoginButton(
+                          username: _usernameController.text,
+                          password: _passwordController.text,
+                        ),
                         Container(
                           height: 80.0,
                           decoration: const BoxDecoration(color: Colors.white),

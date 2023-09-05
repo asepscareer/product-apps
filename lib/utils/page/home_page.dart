@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:product_apps/api/list_products.dart';
+import 'package:product_apps/api/get_list_products.dart';
 import 'package:product_apps/models/product.dart';
 
 class Home extends StatefulWidget {
@@ -64,16 +64,48 @@ class _HomeState extends State<Home> {
                 final product = data.products[index];
                 return Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Image.network(
-                        product.thumbnail,
-                        width: 100,
-                      ),
-                      Text(product.title.toString()),
-                      Text("\$${product.price.toString()}"),
-                    ],
+                  child: Card(
+                    elevation: 4,
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SizedBox(
+                          width: 150,
+                          height: 150,
+                          child: Image.network(
+                            product.thumbnail,
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                        const SizedBox(width: 10),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                product.title.toString(),
+                                style: const TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              Text(
+                                "\$${product.price.toString()}",
+                                style: const TextStyle(
+                                  fontSize: 16,
+                                  color: Colors.green,
+                                ),
+                              ),
+                              const SizedBox(height: 10),
+                              Text(
+                                product.description.toString(),
+                                style: const TextStyle(fontSize: 14),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 );
               },
