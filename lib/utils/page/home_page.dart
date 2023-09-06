@@ -1,117 +1,59 @@
 import 'package:flutter/material.dart';
-import 'package:product_apps/api/get_list_products.dart';
-import 'package:product_apps/models/product.dart';
+import 'package:product_apps/utils/page/product_page.dart';
+import 'package:product_apps/utils/page/profile_page.dart';
 
-class Home extends StatefulWidget {
-  const Home({super.key});
+class HomePage extends StatefulWidget {
+  const HomePage({Key? key}) : super(key: key);
 
   @override
-  State<Home> createState() => _HomeState();
+  State<HomePage> createState() => _HomePageState();
 }
 
-class _HomeState extends State<Home> {
-  late Future<ProductData?> data;
-  bool isLoading = true;
+class _HomePageState extends State<HomePage> {
+  int _selectedIndex = 0;
 
-  @override
-  void initState() {
-    super.initState();
-    data = _getData();
-  }
+  static final List<Widget> _pages = <Widget>[
+    Container(
+      decoration: const BoxDecoration(
+        image: DecorationImage(
+          image: AssetImage("images/gojos.jpg"),
+          fit: BoxFit.cover,
+        ),
+      ),
+    ),
+    const ProductPage(),
+    const ProfilePage(),
+  ];
 
-  Future<ProductData?> _getData() async {
-    try {
-      final result = await GetListProducts().getData();
-      setState(() {
-        isLoading = false;
-      });
-      return result;
-    } catch (e) {
-      print("ERROR: $e");
-      setState(() {
-        isLoading = false;
-      });
-      return null;
-    }
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Products'),
+      body: Center(
+        child: _pages.elementAt(_selectedIndex),
       ),
-      body: FutureBuilder<ProductData?>(
-        future: data,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          } else if (snapshot.hasError) {
-            return Center(
-              child: Text("Error: ${snapshot.error}"),
-            );
-          } else if (!snapshot.hasData || snapshot.data == null) {
-            return const Center(
-              child: Text("No data available."),
-            );
-          } else {
-            final data = snapshot.data!;
-            return ListView.builder(
-              itemCount: data.products.length,
-              itemBuilder: (context, index) {
-                final product = data.products[index];
-                return Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Card(
-                    elevation: 4,
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        SizedBox(
-                          width: 150,
-                          height: 150,
-                          child: Image.network(
-                            product.thumbnail,
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                        const SizedBox(width: 10),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                product.title.toString(),
-                                style: const TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              Text(
-                                "\$${product.price.toString()}",
-                                style: const TextStyle(
-                                  fontSize: 16,
-                                  color: Colors.green,
-                                ),
-                              ),
-                              const SizedBox(height: 10),
-                              Text(
-                                product.description.toString(),
-                                style: const TextStyle(fontSize: 14),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                );
-              },
-            );
-          }
-        },
+      bottomNavigationBar: BottomNavigationBar(
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.card_travel),
+            label: 'Products',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.account_box),
+            label: 'Profile',
+          ),
+        ],
+        currentIndex: _selectedIndex,
+        onTap: _onItemTapped,
       ),
     );
   }

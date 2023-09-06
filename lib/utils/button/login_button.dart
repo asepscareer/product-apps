@@ -1,9 +1,8 @@
-import 'package:product_apps/api/auth.dart';
-import 'package:product_apps/models/user_info.dart';
-import 'package:product_apps/utils/page/home_page.dart';
 import 'package:flutter/material.dart';
+import 'package:product_apps/api/auth.dart';
+import 'package:product_apps/utils/page/home_page.dart';
 
-class LoginButton extends StatefulWidget {
+class LoginButton extends StatelessWidget {
   final String username;
   final String password;
 
@@ -13,17 +12,10 @@ class LoginButton extends StatefulWidget {
     required this.password,
   }) : super(key: key);
 
-  @override
-  State<LoginButton> createState() => _LoginButtonState();
-}
-
-class _LoginButtonState extends State<LoginButton> {
-  Future<UserInfo?> _validate() async {
+  Future<String?> _validate() async {
     try {
-      print("Ini dia " + widget.username);
-      final result =
-          await LoginResponse().validate(widget.username, widget.password);
-      print(result?.token);
+      print("Ini dia " + username);
+      final result = await LoginResponse().validate(username, password);
       return result;
     } catch (e) {
       print("ERROR: $e");
@@ -43,7 +35,7 @@ class _LoginButtonState extends State<LoginButton> {
             context,
             MaterialPageRoute<void>(
               builder: (BuildContext context) {
-                return const Home();
+                return const HomePage();
               },
             ),
           );

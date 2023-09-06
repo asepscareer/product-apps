@@ -1,11 +1,12 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:product_apps/const/constanta.dart';
 
 import 'package:product_apps/models/user_info.dart';
 
 class LoginResponse {
-  Future<UserInfo?> validate(String username, String password) async {
+  Future<String?> validate(String username, String password) async {
     try {
       final url = Uri.parse(ApiConstants.loginUrl);
       final response = await http.post(url,
@@ -21,7 +22,11 @@ class LoginResponse {
         final jsonData = json.decode(response.body);
         final result = UserInfo.fromJson(jsonData);
 
-        return result;
+        String token = result.token;
+        Map<String, dynamic> decodedToken = JwtDecoder.decode(token);
+        print(decodedToken["email"]);
+
+        return token;
       } else {
         print("Failed to fetch data. Status code: ${response.statusCode}");
         return null;
