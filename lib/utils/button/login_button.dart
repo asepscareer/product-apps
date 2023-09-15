@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:product_apps/api/auth.dart';
-import 'package:product_apps/utils/page/home_page.dart';
+import 'package:product_apps/utils/pages/home_page.dart';
 
 class LoginButton extends StatelessWidget {
   final String username;

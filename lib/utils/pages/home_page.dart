@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:product_apps/utils/page/product_page.dart';
-import 'package:product_apps/utils/page/profile_page.dart';
+import 'package:product_apps/utils/pages/product_page.dart';
+import 'package:product_apps/utils/pages/profile_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);

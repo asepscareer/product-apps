@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:product_apps/const/text/lorem.dart';
 
 class ProfilePage extends StatelessWidget {
-  const ProfilePage({Key? key});
+  const ProfilePage({super.key, Key? type});
 
   @override
   Widget build(BuildContext context) {
